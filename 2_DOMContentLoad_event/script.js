@@ -1,6 +1,6 @@
 // Városok listája
 const cities = [
-    { name: "Berlin", value: "berlin"},
+    { name: "Berlin", value: "berlin" },
     { name: "Tokyo", value: "tokyo" },
     { name: "Rio", value: "rio" },
     { name: "Nairobi", value: "nairobi" },
@@ -12,30 +12,41 @@ const cities = [
     { name: "Professzor", value: "professor" },
 ];
 
-const select = document.querySelector('#city');
+// DOM betöltődése után
+document.addEventListener("DOMContentLoaded", () => {
+    const select = document.getElementById("city");
+    const demo = document.getElementById("demo");
+    const imageContainer = document.getElementById("image");
 
-window.addEventListener('DOMContentLoaded');
-
-function betolt() {
+    // Opciók feltöltése
     cities.forEach(city => {
-        //console.table(city)
-        // <option> </option> tag létrehozása
-        const option = document.createElement('option');
-
-        // <option value="város_neve> </option> létrehozása"
+        const option = document.createElement("option");
         option.value = city.value;
-
-        // <option value="város_neve>Város_neve</option> létrehozása"
         option.textContent = city.name;
-
-        // állítsuk be? hogy a Professzor legyen a default értéke a select-nek
-        if (city.name === 'Professzor') {
-            option.selected = true;
-        }
-
-        //belepakoljuk az elkészített option tag-eket a select változóba
-        select.append(option);
+        select.appendChild(option);
     });
-}
 
-// Házi - megoldani a képcserés funkciót.
+    // Eseménykezelő a választásra
+    select.addEventListener("change", () => {
+        const selectedValue = select.value;
+
+        if (selectedValue) {
+            // Kiírás
+            const selectedCity = cities.find(city => city.value === selectedValue);
+            demo.textContent = selectedCity.name;
+
+            // Kép betöltése
+            imageContainer.innerHTML = ""; // korábbi kép törlése
+
+            const img = document.createElement("img");
+            img.src = `./img/${selectedValue}.jpg`; // pl. ./img/berlin.jpg
+            img.alt = selectedCity.name;
+            img.style.maxWidth = "300px"; // opcionális stílus
+
+            imageContainer.appendChild(img);
+        } else {
+            demo.textContent = "";
+            imageContainer.innerHTML = "";
+        }
+    });
+});
